@@ -1,0 +1,19 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    {% tailwind_css %}
+</head>
+<body>
+    <h2  class="text-3xl">Welcome Home!</h2>
+    {% if user.is_authenticated %}
+        <p class="text-3xl">Hello, {{ user.username }}!</p>
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Register</a>
+    {% endif %}
+</body>
+</html>
