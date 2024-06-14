@@ -12,6 +12,10 @@ def home_view(request):
 
     return HttpResponse(template.render(request=request))
 
+def auction_view(request):
+    template = loader.get_template('auctions.html')
+
+    return HttpResponse(template.render(request=request))
 
 def user_signup(request):
     if request.method == 'POST':
