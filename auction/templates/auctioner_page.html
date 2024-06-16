@@ -1,0 +1,22 @@
+<h2>Auctioner Page</h2>
+{{ request.user }}
+
+<a href="{% url 'add-auction' %}">Add Auction</a>
+
+<hr>
+
+{% for auction in auction_list %}
+    <p>Auction id: {{ auction.id }}</p>
+    <p>Name: {{ auction.name }}</p>
+    <p>Description: {{ auction.description }}</p>
+    <img src="{{ auction.image.url }}" alt="">
+    <p>Base Price: {{ auction.base_price }}</p>
+    <p>Auctioner: {{ auction.auctioner }}</p>
+    <p>Starting date: {{ auction.created_date }}</p>
+    <p>Ending date: {{ auction.ending_date }}</p>
+    <p>Is closed: {{ auction.is_closed }}</p>
+    <p>Bids count: {{ auction.bid_count }}</p>
+    <p>Max bids: {{ auction.max_bids }}</p>
+    <p>Winner: {{ auction.get_winner }}</p>
+    <hr>
+{% endfor %}
