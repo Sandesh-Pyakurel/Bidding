@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from django_cron import CronJobManager
 
 
 class AuctionConfig(AppConfig):
