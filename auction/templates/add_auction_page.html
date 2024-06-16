@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Auction</title>
+</head>
+<body>
+    <h1>Create Auction</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Auction</button>
+    </form>
+</body>
+</html>
