@@ -1,3 +1,4 @@
+import asyncio
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -6,7 +7,7 @@ from django.template import loader
 
 from .models import CustomUser, Auction, BidsToAuction
 from .forms import UserSignupForm, UserLoginForm, AddAuctionForm
-
+from .nillion.libs import store_program_nillion
 
 def home_view(request):
     template = loader.get_template('home.html')
@@ -79,6 +80,8 @@ def add_auction_view(request):
             if form.is_valid():
                 auction = form.save(commit=False)
                 auction.auctioner = request.user
+                program_id = asyncio.run(store_program_nillion.store_program_in_nillion())
+                auction.program_id = program_id
                 auction.save()
 
                 return redirect('auctioner')
