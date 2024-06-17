@@ -12,7 +12,7 @@
             color: #333;
             letter-spacing: 1px;
         }
-        input {
+        input,select {
             display: block;
             width: 100%;
             padding: 0.5rem;
@@ -22,7 +22,7 @@
             border-radius: .8rem !important; 
             transition: border-color 0.3s, box-shadow 0.3s;
         }
-        input:focus {
+        input:focus,select:focus {
             border-color: #cf1cc4 !important; 
             box-shadow: 0 0 0 2px rgba(207, 28, 196, 0.4) !important; 
         }
@@ -38,6 +38,11 @@
                 <div class="gap-3 flex flex-col">
                     Username:
                     {{form.username}}
+                    {% for error in form.username.errors %}{% endfor %}
+                </div>
+                <div class="gap-3 flex flex-col">
+                    User Type:
+                    {{form.user_type}}
                     {% for error in form.username.errors %}{% endfor %}
                 </div>
                 <div class="gap-3 flex flex-col">
