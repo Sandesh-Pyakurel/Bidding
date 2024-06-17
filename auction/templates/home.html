@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% load static %}
 {% load static tailwind_tags %}
 
 {% block title %}
@@ -12,8 +13,8 @@ BidSecure
             <span>AUCTIONS</span>
         </h1>
         <div>
-            <button class="border-none shadow-md rounded-3xl px-10 py-4 mr-[16px] hover:bg-gray-50 hover:shadow-[#cf1cc4]">Sign in</button>
-            <button class="border-none shadow-md rounded-3xl px-10 py-4 bg-[#cf1cc4] text-white hover:bg-[#a12699]  hover:shadow-md ">Sign up</button>
+            <a href="{% url 'login' %}"><button class="border-none shadow-md rounded-3xl px-10 py-4 mr-[16px] hover:bg-gray-50 hover:shadow-[#cf1cc4]">Login</button></a>
+            <a href="{% url 'signup' %}"><button class="border-none shadow-md rounded-3xl px-10 py-4 bg-[#cf1cc4] text-white hover:bg-[#a12699]  hover:shadow-md ">Sign up</button></a>
         </div>
     </header>
     <main class="flex flex-row mx-[144px] mt-[84px] justify-between">
