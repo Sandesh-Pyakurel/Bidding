@@ -1,13 +1,13 @@
 import asyncio
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.template import loader
 
 from .models import CustomUser, Auction, BidsToAuction
-from .forms import UserSignupForm, UserLoginForm, AddAuctionForm
-from .nillion.libs import store_program_nillion
+from .forms import UserSignupForm, UserLoginForm, AddAuctionForm, ApplyToAuctionForm
+from .nillion.libs import store_program_nillion, store_secret_nillion
 
 def home_view(request):
     template = loader.get_template('home.html')
@@ -74,6 +74,8 @@ def auctioner_view(request):
         }
 
         return HttpResponse(template.render(context=context, request=request))
+    
+    return redirect('login')
 
 
 @login_required
@@ -96,4 +98,80 @@ def add_auction_view(request):
             form = AddAuctionForm()
         template = loader.get_template('add_auction_page.html')
         return HttpResponse(template.render(context={'form':form}, request=request))
+    
+    return redirect('login')
+
+
+@login_required
+def bidder_view(request):
+    if not request.user.is_auctioner:
+        template = loader.get_template("bidder_page.html")
+
+        applied_bids = BidsToAuction.objects.select_related('auction').filter(bidder=request.user)
+
+        applied_list = []
+        for bid in applied_bids:
+            applied_list.append({
+                'id': bid.auction.pk,
+                'name': bid.auction.name,
+                'base_price': bid.auction.base_price,
+                'description': bid.auction.description,
+                'image': bid.auction.image,
+                'ending_date': bid.auction.ending_date,
+                'is_closed': bid.auction.is_closed,
+                'bid_count': bid.auction.bid_count,
+                'max_bids': bid.auction.max_bids,
+                'winner': bid.auction.get_winner(),
+                'bidding_date': bid.bidding_date,
+                'auctioner': bid.auction.auctioner
+            })
+
+        available_list = Auction.objects.filter(is_closed=False).exclude(bidstoauction__bidder=request.user)
+
+        context = {
+            'applied_list': applied_list,
+            'available_list': available_list
+        }
+
+        return HttpResponse(template.render(context=context, request=request))
+    
+    return redirect('login')
+
+
+@login_required
+def auction_detail_view(request, id):
+    if not request.user.is_auctioner:
+        auction = get_object_or_404(Auction, pk=id)
+        if request.method == 'POST':
+            form = ApplyToAuctionForm(data=request.POST)
+            if form.is_valid():
+                amount = form.cleaned_data.get('amount')
+                
+                if amount < auction.base_price:
+                    return HttpResponse("Amount cannot be less than base price")
+
+                if auction.bid_count() < 10:
+                    bid_no = auction.bid_count() + 1
+
+                    store_id = asyncio.run(store_secret_nillion.store_secret_in_nillion(auction.program_id, amount, bid_no))
+
+                    bid_obj = BidsToAuction(auction=auction, bidder=request.user, store_id=store_id, bid_number=bid_no)
+                    bid_obj.save()
+                    return redirect('bidder')
+                else:
+                    return HttpResponse("Already 10 bids in the auction")
+            else:
+                print(form.errors)
+        else:
+            form = ApplyToAuctionForm()
+            context = {
+                'auction': auction,
+                'form': form
+            }
+            template = loader.get_template('auction_detail_page.html')
+
+            return HttpResponse(template.render(context=context, request=request))
+        
+    return redirect('login')
+
 

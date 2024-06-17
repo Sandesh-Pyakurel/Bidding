@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
-    'django_cron',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
@@ -145,7 +145,14 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
-CRON_CLASSES = [
-    'auction.cron.CheckAuctionsCronJob',
-]
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'check-auctions-every-minute': {
+        'task': 'auction.tasks.check_auctions',
+        'schedule': 60.0,  # 60 seconds
+    },
+}

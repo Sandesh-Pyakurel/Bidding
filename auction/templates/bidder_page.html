@@ -1,0 +1,35 @@
+<h2>Bidder Page</h2>
+<p>Username:{{ request.user }}</p>
+
+<hr>
+<h3>Applied Auctions</h3>
+
+
+{% for auction in applied_list %}
+    <p>Auction id: {{ auction.id }}</p>
+    <p>Name: {{ auction.name }}</p>
+    <p>Description: {{ auction.description }}</p>
+    <img src="{{ auction.image.url }}" alt="">
+    <p>Base Price: {{ auction.base_price }}</p>
+    <p>Auctioner: {{ auction.auctioner }}</p>
+    <p>Ending date: {{ auction.ending_date }}</p>
+    <p>Is closed: {{ auction.is_closed }}</p>
+    <p>Bids count: {{ auction.bid_count }}</p>
+    <p>Max bids: {{ auction.max_bids }}</p>
+    <p>Winner: {{ auction.get_winner }}</p>
+    <p>Bidding_date: {{ auction.bidding_date }}</p>
+    <hr>
+{% endfor %}
+
+<h3>Available auctions for bidding</h3>
+{% for auction in available_list %}
+    <p>Auction id: {{ auction.id }}</p>
+    <a href="{% url 'auction-detail' auction.pk %}"><p>Name: {{ auction.name }}</p></a>
+    <img src="{{ auction.image.url }}" alt="">
+    <p>Base Price: {{ auction.base_price }}</p>
+    <p>Ending date: {{ auction.ending_date }}</p>
+    <p>Is closed: {{ auction.is_closed }}</p>
+    <p>Bids count: {{ auction.bid_count }}</p>
+    <p>Max bids: {{ auction.max_bids }}</p>
+    <hr>
+{% endfor %}
