@@ -18,5 +18,5 @@ urlpatterns = [
     path('auctioner/', auctioner_view, name='auctioner'),
     path('auctioner/add/', add_auction_view, name='add-auction'),
     path('bidder/', bidder_view, name='bidder'),
-    path('auction/<int:id>,', auction_detail_view, name='auction-detail'),
+    path('auction/<int:id>', auction_detail_view, name='auction-detail'),
 ]
