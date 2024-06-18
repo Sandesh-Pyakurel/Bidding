@@ -10,7 +10,7 @@ async def store_secret_in_nillion(program_id, value, bid_no):
     cluster_id = os.getenv("NILLION_CLUSTER_ID")
 
     client = create_nillion_client(
-        nillion.UserKey.from_file(os.getenv("NILLION_USERKEY_PATH_PARTY_"+str(bid_no)))
+        nillion.UserKey.from_file(os.getenv("NILLION_USERKEY_PATH_PARTY_1"))
     )
 
     print(cluster_id)

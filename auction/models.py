@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+from .signals import auction_closed
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -38,6 +39,7 @@ class Auction(models.Model):
     def close_auction(self):
         self.is_closed = True
         self.save()
+        auction_closed.send(sender=self.__class__, auction_id=self.id)
 
     def bid_count(self):
         return self.bidstoauction_set.count()

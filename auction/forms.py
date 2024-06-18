@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from .models import CustomUser, Auction
+from .models import CustomUser, Auction, BidsToAuction
 
 
 class UserSignupForm(UserCreationForm):
@@ -38,3 +38,6 @@ class AddAuctionForm(forms.ModelForm):
         model = Auction
         fields = ['name', 'description', 'image', 'base_price']
         
+
+class ApplyToAuctionForm(forms.Form):
+    amount = forms.IntegerField(required=True)

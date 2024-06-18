@@ -1,0 +1,19 @@
+<p>Auction id: {{ auction.id }}</p>
+<p>Name: {{ auction.name }}</p>
+<p>Description: {{ auction.description }}</p>
+<img src="{{ auction.image.url }}" alt="">
+<p>Base Price: {{ auction.base_price }}</p>
+<p>Auctioner: {{ auction.auctioner }}</p>
+<p>Starting date: {{ auction.created_date }}</p>
+<p>Ending date: {{ auction.ending_date }}</p>
+<p>Is closed: {{ auction.is_closed }}</p>
+<p>Bids count: {{ auction.bid_count }}</p>
+<p>Max bids: {{ auction.max_bids }}</p>
+<p>Winner: {{ auction.get_winner }}</p>
+<hr>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Apply</button>
+</form>

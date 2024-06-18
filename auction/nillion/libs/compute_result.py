@@ -17,7 +17,6 @@ async def compute_result(program_id, store_id, base_price):
     party_name = "Party1"
 
     num_bids = len(store_id)
-    print(num_bids)
 
     if num_bids == 10:
         compute_time_secrets = nillion.Secrets({})
