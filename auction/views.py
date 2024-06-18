@@ -125,8 +125,11 @@ def bidder_view(request):
     if not request.user.is_auctioner:
         template = loader.get_template("bidder_page.html")
 
-        applied_bids = BidsToAuction.objects.select_related('auction').filter(bidder=request.user)
+        search_query = request.GET.get('search')
+        filter_query = request.GET.get('filter')
+        view_applied = request.GET.get('view') == 'applied'
 
+        applied_bids = BidsToAuction.objects.select_related('auction').filter(bidder=request.user)
         applied_list = []
         for bid in applied_bids:
             applied_list.append({
@@ -146,9 +149,29 @@ def bidder_view(request):
 
         available_list = Auction.objects.filter(is_closed=False).exclude(bidstoauction__bidder=request.user)
 
+        if search_query:
+            available_list = available_list.filter(
+                Q(name__icontains=search_query) |
+                Q(description__icontains=search_query)
+            )
+            applied_list = [auction for auction in applied_list if search_query.lower() in auction['name'].lower() or search_query.lower() in auction['description'].lower()]
+
+        if filter_query == 'completed':
+            available_list = available_list.filter(is_closed=True)
+            applied_list = [auction for auction in applied_list if auction['is_closed']]
+        elif filter_query == 'ongoing':
+            available_list = available_list.filter(is_closed=False)
+            applied_list = [auction for auction in applied_list if not auction['is_closed']]
+        elif filter_query == 'upcoming':
+            available_list = available_list.filter(ending_date__gt=timezone.now())
+            applied_list = [auction for auction in applied_list if auction['ending_date'] > timezone.now()]
+
         context = {
             'applied_list': applied_list,
-            'available_list': available_list
+            'available_list': available_list,
+            'search_query': search_query,
+            'filter_query': filter_query,
+            'view_applied': view_applied,
         }
 
         return HttpResponse(template.render(context=context, request=request))
