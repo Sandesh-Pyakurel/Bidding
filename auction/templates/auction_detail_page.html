@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-
+{{ request.user }}
 {% block title %}
     Auction Bidding
 {% endblock title %}
@@ -27,6 +27,12 @@
 {% endblock style %}
 
 {% block body %}
+<header class="mx-8 flex justify-between my-[16px] h-full">
+    <h1 class="text-center text-2xl font-bold flex items-center"><a href="/">BidSecure</a></h1>
+    <div class="flex items-center">
+        <img src="{% static 'images/user_icon.png' %}" alt="User">
+    </div>
+</header>
 <div class="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-6 lg:px-8">
     <div class="max-w-7xl w-full bg-white shadow-lg rounded-lg overflow-hidden p-6 space-y-6">
         <div class="lg:flex lg:space-x-6">
@@ -88,9 +94,16 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="w-full bg-[#cf1cc4] text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-blue-700">
+                        {% if not user.is_auctioner %}
+                        <button type="submit" class="w-full bg-[#cf1cc4] text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-blue-700 ">
                             Apply
                         </button>
+                        {% endif %}
+                        {% if user.is_auctioner %}
+                        <div class="w-full bg-gray-400 text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-400 text-center">
+                            Only Bidder Can Apply.
+                        </div>
+                        {% endif %}
                     </form>
                 </div>
             </div>
