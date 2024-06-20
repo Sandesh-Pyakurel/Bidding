@@ -95,9 +95,17 @@
                         {% csrf_token %}
                         {{ form.as_p }}
                         {% if not user.is_auctioner %}
+                        {% if can_bidder_apply %}
                         <button type="submit" class="w-full bg-[#cf1cc4] text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-blue-700 ">
                             Apply
                         </button>
+                        
+                        {% endif %}
+                        {% if not can_bidder_apply %}
+                        <div class="w-full bg-gray-400 text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-400 text-center">
+                            You have already applied.
+                        </div>
+                        {% endif %}
                         {% endif %}
                         {% if user.is_auctioner %}
                         <div class="w-full bg-gray-400 text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-400 text-center">
