@@ -40,6 +40,9 @@
             <div class="lg:w-2/3 space-y-6">
                 <!-- Auction Details -->
                 <div class="bg-stone-100 p-6 rounded-lg shadow-sm">
+                    {% if auction.is_closed %}
+                    <div class="bg-red-200 w-full font-bold text-center py-2 mb-4 rounded-lg ">This auction has already ended</div>
+                    {% endif %}
                     <h2 class="text-xl font-bold text-gray-900 mb-4">Auction Details</h2>
                     <div class="space-y-2">
                         <div class="flex items-center">
@@ -94,6 +97,12 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
+                        {% if auction.is_closed %}
+                        <div class="w-full bg-gray-400 text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-gray-400 text-center">
+                            Auction has already ended.
+                        </div>
+                        {% endif%}
+                        {% if not auction.is_closed %}
                         {% if not user.is_auctioner %}
                         <button type="submit" class="w-full bg-[#cf1cc4] text-white py-2 px-4 rounded-lg text-lg font-semibold mt-4 hover:bg-blue-700 ">
                             Apply
@@ -104,6 +113,7 @@
                             Only Bidder Can Apply.
                         </div>
                         {% endif %}
+                        {% endif%}
                     </form>
                 </div>
             </div>
