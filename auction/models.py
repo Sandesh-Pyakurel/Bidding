@@ -25,12 +25,12 @@ class Auction(models.Model):
     created_date = models.DateTimeField()
     ending_date = models.DateTimeField()
     is_closed = models.BooleanField(default=False)
-    max_bids = models.IntegerField(default=10)
+    max_bids = models.IntegerField(default=4)
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.created_date = timezone.now()
-            self.ending_date = self.created_date + timedelta(days=1)
+            self.ending_date = self.created_date + timedelta(minutes=5)
         super(Auction, self).save(*args, **kwargs)
 
     def __str__(self):
