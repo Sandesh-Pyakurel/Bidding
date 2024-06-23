@@ -204,10 +204,15 @@ def auction_detail_view(request, id):
         else:
             print(form.errors)
     else:
+        can_bidder_apply = True
+        if not request.user.is_auctioner:
+            if BidsToAuction.objects.filter(auction=auction, bidder=request.user).exists():
+                can_bidder_apply = False
         form = ApplyToAuctionForm()
         context = {
             'auction': auction,
-            'form': form
+            'form': form,
+            'can_bidder_apply': can_bidder_apply
         }
         template = loader.get_template('auction_detail_page.html')
 
