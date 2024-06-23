@@ -38,23 +38,31 @@
                 <div class="gap-3 flex flex-col">
                     Username:
                     {{form.username}}
-                    {% for error in form.username.errors %}{% endfor %}
+                    {% for error in form.username.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
                 </div>
                 <div class="gap-3 flex flex-col">
                     User Type:
                     {{form.user_type}}
-                    {% for error in form.username.errors %}{% endfor %}
+                    {% for error in form.username.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
                 </div>
                 <div class="gap-3 flex flex-col">
                     Password:
                     {{form.password1}}
-                    {% for error in form.password1.errors %}{% endfor %}
+                    {% for error in form.password1.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
                 </div>
                 
                 <div class="gap-3 flex flex-col">
                     Password confirmation:
                     {{form.password2}}
-                    {% for error in form.password2.errors %}{% endfor %}
+                    {% for error in form.password2.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
                 </div>
 
                 <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-3xl shadow-sm text-lg font-semibold text-white bg-[#cf1cc4] hover:bg-[#a12699] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#cf1cc4]">Sign Up</button>
