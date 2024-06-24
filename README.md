@@ -134,6 +134,31 @@ BidSecure prioritizes the security and privacy of user data. We use Nillion Netw
 
 We welcome contributions to BidSecure! Please follow these steps to contribute:
 
+1. **Fork the Repository**: Click the "Fork" button on GitHub to create your copy.
+
+2. **Clone Your Fork**:
+   ```bash
+   git clone https://github.com/Sandesh-Pyakurel/Bidding.git
+   ```
+
+3. **Create a Branch**:
+   ```bash
+   git checkout -b your-branch-name
+   ```
+
+4. **Make Changes**: Implement your changes.
+
+5. **Commit Your Changes**:
+   ```bash
+   git commit -m "Description of your changes"
+   ```
+
+6. **Push Your Changes**:
+   ```bash
+   git push -u origin your-branch-name
+   ```
+
+7. **Create a Pull Request**: Submit your changes for review.
 
 
 ## License
