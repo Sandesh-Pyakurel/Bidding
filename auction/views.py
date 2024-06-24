@@ -157,10 +157,10 @@ def bidder_view(request):
             applied_list = [auction for auction in applied_list if search_query.lower() in auction['name'].lower() or search_query.lower() in auction['description'].lower()]
 
         if filter_query == 'completed':
-            available_list = available_list.filter(is_closed=True)
+            available_list = available_list.filter(ending_date__lt=timezone.now())
             applied_list = [auction for auction in applied_list if auction['is_closed']]
         elif filter_query == 'ongoing':
-            available_list = available_list.filter(is_closed=False)
+            available_list = available_list.filter(ending_date__gt=timezone.now(), created_date__lt=timezone.now(), is_closed=False)
             applied_list = [auction for auction in applied_list if not auction['is_closed']]
         elif filter_query == 'upcoming':
             available_list = available_list.filter(ending_date__gt=timezone.now())
@@ -181,38 +181,43 @@ def bidder_view(request):
 
 @login_required
 def auction_detail_view(request, id):
-    if not request.user.is_auctioner:
-        auction = get_object_or_404(Auction, pk=id)
-        if request.method == 'POST':
-            form = ApplyToAuctionForm(data=request.POST)
-            if form.is_valid():
-                amount = form.cleaned_data.get('amount')
-                
-                if amount < auction.base_price:
-                    return HttpResponse("Amount cannot be less than base price")
+    # if not request.user.is_auctioner:
+    auction = get_object_or_404(Auction, pk=id)
+    if request.method == 'POST':
+        form = ApplyToAuctionForm(data=request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data.get('amount')
+            
+            if amount < auction.base_price:
+                return HttpResponse("Amount cannot be less than base price")
 
-                if auction.bid_count() < 10:
-                    bid_no = auction.bid_count() + 1
+            if auction.bid_count() < 10:
+                bid_no = auction.bid_count() + 1
 
-                    store_id = asyncio.run(store_secret_nillion.store_secret_in_nillion(auction.program_id, amount, bid_no))
+                store_id = asyncio.run(store_secret_nillion.store_secret_in_nillion(auction.program_id, amount, bid_no))
 
-                    bid_obj = BidsToAuction(auction=auction, bidder=request.user, store_id=store_id, bid_number=bid_no)
-                    bid_obj.save()
-                    return redirect('bidder')
-                else:
-                    return HttpResponse("Already 10 bids in the auction")
+                bid_obj = BidsToAuction(auction=auction, bidder=request.user, store_id=store_id, bid_number=bid_no)
+                bid_obj.save()
+                return redirect('bidder')
             else:
-                print(form.errors)
+                return HttpResponse("Already 10 bids in the auction")
         else:
-            form = ApplyToAuctionForm()
-            context = {
-                'auction': auction,
-                'form': form
-            }
-            template = loader.get_template('auction_detail_page.html')
+            print(form.errors)
+    else:
+        can_bidder_apply = True
+        if not request.user.is_auctioner:
+            if BidsToAuction.objects.filter(auction=auction, bidder=request.user).exists():
+                can_bidder_apply = False
+        form = ApplyToAuctionForm()
+        context = {
+            'auction': auction,
+            'form': form,
+            'can_bidder_apply': can_bidder_apply
+        }
+        template = loader.get_template('auction_detail_page.html')
 
-            return HttpResponse(template.render(context=context, request=request))
+        return HttpResponse(template.render(context=context, request=request))
         
-    return redirect('login')
+    # return redirect('login')
 
 

@@ -44,6 +44,7 @@
     BidSecure
 {% endblock %}
 {% block body %}
+
 <div class="min-h-screen">
     {% include './header.html' %}
     <section class="grid grid-cols-5 border-t"> 
@@ -63,15 +64,17 @@
             {% if view_applied %}
                 {% if applied_list %}
                     {% for auction in applied_list %}
+                    <a href="{% url 'auction-detail' auction.id %}">
                     <div class="bg-white shadow-md rounded-lg p-4 border hover:cursor-pointer hover:shadow-[#cf1cc4] h-[335px] ">
                         <img src="{{ auction.image.url }}" alt="Item Image" class="rounded-xl w-full h-48 object-cover">
                         <hr/>
                         <div class="p-2">
                             <h3 class="text-lg font-semibold">{{ auction.name }}</h3>
                             <p class="text-gray-600 text-sm">End Time: {{ auction.ending_date }}</p>
-                            <button class="mt-2 bg-[#cf1cc4] hover:bg-[#a12699] text-white px-4 py-2 rounded-full">Place a Bid</button>
+                            <button href="{% url 'auction-detail' auction.id %}" class="mt-2 inline-block bg-[#cf1cc4] hover:bg-[#a12699] text-white px-4 py-2 rounded-full">Place a Bid</button>
                         </div>
                     </div>
+                </a>
                     {% endfor %}
                 {% else %}
                     <div class="col-span-4 text-center py-8">
@@ -81,15 +84,17 @@
             {% else %}
                 {% if available_list %}
                     {% for auction in available_list %}
+                    <a href="{% url 'auction-detail' auction.id %}">
                     <div class="bg-white shadow-md rounded-lg p-4 border hover:cursor-pointer hover:shadow-[#cf1cc4] h-[335px] ">
                         <img src="{{ auction.image.url }}" alt="Item Image" class="rounded-xl w-full h-48 object-cover">
                         <hr/>
                         <div class="p-2">
                             <h3 class="text-lg font-semibold">{{ auction.name }}</h3>
                             <p class="text-gray-600 text-sm">End Time: {{ auction.ending_date }}</p>
-                            <button class="mt-2 bg-[#cf1cc4] hover:bg-[#a12699] text-white px-4 py-2 rounded-full">Place a Bid</button>
+                            <button  class="mt-2 inline-block bg-[#cf1cc4] hover:bg-[#a12699] text-white px-4 py-2 rounded-full">Place a Bid</button>
                         </div>
                     </div>
+                </a>
                     {% endfor %}
                 {% else %}
                     <div class="col-span-4 text-center py-8">
@@ -99,6 +104,7 @@
             {% endif %}
         </div>
     </section>
+
 </div>
 {% include "footer.html" %}
 {% endblock %}
