@@ -44,12 +44,47 @@ BidSecure is a secure web application designed for online auctions. Bidders can 
 - [Usage](#usage)
   - [For Bidders](#for-bidders)
   - [For Auctioneers](#for-auctioneers)
+- [Demo](#demo)
 - [Security](#security)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
+You need to have [nillion-sdk](https://docs.nillion.com/nillion-sdk-and-tools) installed. Follow through the given link to install it.
 
+Now create a virtual environment, activate it and install the requirements.
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Now you need to start the local nillion network.
+```bash
+cd auction/nillion
+./bootstrap-local-environment.sh
+cd ../..
+```
+
+Run migrate command.
+```bash
+python3 manage.py migrate
+```
+You need to have `redis-server` installed in you machine. You can install it with:
+```bash
+sudo apt install redis-server
+```
+Then start it with:
+```bash
+sudo systemctl start redis-server
+```
+Now we can run the application. Run following 4 commands in seperate terminal.
+```bash
+python manage.py runserver
+python manage.py tailwind start
+celery -A bidding beat --loglevel=info
+celery -A bidding worker --loglevel=info
+```
 ### Prerequisites
 
 - Python
@@ -83,6 +118,13 @@ BidSecure is a secure web application designed for online auctions. Bidders can 
 3. **Manage Auctions:**
    - View your posted auctions.
    - Monitor bids and auction progress.
+
+## Demo
+
+
+https://github.com/Sandesh-Pyakurel/Bidding/assets/82999440/019af915-c659-41ab-a2c0-c3f39da5ee07
+
+
 
 ## Security
 
