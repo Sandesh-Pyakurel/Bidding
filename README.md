@@ -28,11 +28,11 @@
 
 ## Overview
 
-BidSecure is a secure web application designed for online auctions. Bidders can place bids on available auctions, and auctioneers can post items for auction. BidSecure leverages Nillion's TinyBid technology to ensure secure bidding, protecting users from data leakage and ensuring a safe and trustworthy auction experience.
+BidSecure is a secure web application designed for online auctions. Bidders can place bids on available auctions, and auctioneers can post items for auction. BidSecure leverages Nillion network to ensure secure bidding, protecting users from data leakage and ensuring a safe and trustworthy auction experience.
 
 ## Features
 
-- **Secure Bidding:** Utilizes Nillion's TinyBid to provide secure bidding mechanisms.
+- **Secure Bidding:** Utilizes Nillion Network to provide secure bidding mechanisms.
 - **Auction Posting:** Auctioneers can easily post items for auction.
 - **User-Friendly Interface:** Intuitive design for both bidders and auctioneers.
 - **Search for items:** Get results for specific items.
@@ -102,7 +102,7 @@ celery -A bidding worker --loglevel=info
 
 3. **Place a Bid:**
    - Select an auction and enter your bid amount.
-   - Bids are securely processed using Nillion's TinyBid technology.
+   - Bids are securely processed using Nillion Network.
 
 4. **Monitor Auctions:**
    - Track your bids and get real-time updates on auction status.
@@ -128,7 +128,7 @@ https://github.com/Sandesh-Pyakurel/Bidding/assets/82999440/019af915-c659-41ab-a
 
 ## Security
 
-BidSecure prioritizes the security and privacy of user data. We use Nillion's TinyBid technology to ensure that all bids are encrypted and securely processed, preventing data leakage and unauthorized access. For more details on TinyBid, visit the [Nillion website](https://www.nillion.com).
+BidSecure prioritizes the security and privacy of user data. We use Nillion Network to ensure that all bids are encrypted and securely processed, preventing data leakage and unauthorized access. For more details, visit the [Nillion website](https://www.nillion.com).
 
 ## Contributing
 
